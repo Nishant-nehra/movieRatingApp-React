@@ -8,6 +8,7 @@ import movies from './reducers';
 
 
 const store=createStore(movies);
+console.log("store functions that we can use",store);
 // console.log("Before State:",store.getState());
 
 // store.dispatch({
