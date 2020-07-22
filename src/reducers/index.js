@@ -55,7 +55,7 @@ const initialSearchState={
 export function search(state=initialSearchState,action){
     return state;
 }
-
+//This is used without combineReducers method
 // const initialRootState={
 //     movies:initialMoviesState,
 //     search:initialSearchState
@@ -69,6 +69,8 @@ export function search(state=initialSearchState,action){
 //     }
 // }
 
+
+//it does same as above commented lines but is easy and short to write
 export default combineReducers({
     movies:movies,
     search:search
