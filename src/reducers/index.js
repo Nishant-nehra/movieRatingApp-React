@@ -1,12 +1,12 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 
-import { ADD_MOVIES, ADD_FAVOURITE,REMOVE_FAVOURITE,SET_SHOW_FAVOURITES } from '../actions';
+import { ADD_MOVIES, ADD_FAVOURITE, REMOVE_FAVOURITE, SET_SHOW_FAVOURITES,ADD_MOVIE_TO_LIST ,ADD_SEARCH_RESULT} from '../actions';
 
 
 const initialMoviesState = {
     list: [],
     favourites: [],
-    showFavourites:false,
+    showFavourites: false,
 }
 
 
@@ -30,30 +30,50 @@ export function movies(state = initialMoviesState, action) {
         case ADD_FAVOURITE:
             return {
                 ...state,
-                favourites: [...state.favourites,action.movie],
+                favourites: [...state.favourites, action.movie],
             }
-        case REMOVE_FAVOURITE:{
-            const filteredArray=state.favourites.filter(movie=>movie.Title!==action.movie.Title);
-            return{
+        case REMOVE_FAVOURITE: {
+            const filteredArray = state.favourites.filter(movie => movie.Title !== action.movie.Title);
+            return {
                 ...state,
-                favourites:filteredArray
+                favourites: filteredArray
             }
         }
         case SET_SHOW_FAVOURITES:
-            return{
+            return {
                 ...state,
-                showFavourites:action.val
+                showFavourites: action.val
             }
-        default:return state;
+        case ADD_MOVIE_TO_LIST:
+            return {
+                ...state,
+                list: [action.movie, ...state.list]
+            }
+        default: return state;
     }
 }
 
-const initialSearchState={
-    result:{}
+const initialSearchState = {
+    result: {},
+    showSearchResults: false,
 };
 
-export function search(state=initialSearchState,action){
-    return state;
+export function search(state = initialSearchState, action) {
+    switch (action.type){
+        case ADD_SEARCH_RESULT:
+            return{
+                ...state,
+                result:action.movie,
+                showSearchResults: true
+            }
+            case ADD_MOVIE_TO_LIST:
+                return {
+                    ...state,
+                    showSearchResults: false
+                }    
+        default:return state;
+    }
+    
 }
 //This is used without combineReducers method
 // const initialRootState={
@@ -72,6 +92,6 @@ export function search(state=initialSearchState,action){
 
 //it does same as above commented lines but is easy and short to write
 export default combineReducers({
-    movies:movies,
-    search:search
+    movies: movies,
+    search: search
 });

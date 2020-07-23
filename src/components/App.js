@@ -37,14 +37,14 @@ class App extends React.Component {
   }
 
   render() {
-    const {movies}=this.props.store.getState(); //{ movies:{},search:{}}
+    const {movies,search}=this.props.store.getState(); //{ movies:{},search:{}}
     const {list,favourites,showFavourites}=movies;
     console.log("RENDER",this.props.store.getState());
     // if showFavourites is true then display favourites tab else movies tab... favourites and list are arrays we get from props
     const displayMovie=showFavourites?favourites:list;
     return (
       <div className="App">
-        <Navbar />
+        <Navbar dispatch={this.props.store.dispatch} search={search} />
         <div className='main'>
           <div className='tabs'>
             {/* for class i have used js backticks we can also do it without backticks */}
