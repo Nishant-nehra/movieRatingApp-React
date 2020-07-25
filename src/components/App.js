@@ -1,30 +1,32 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
 import { data } from '../data';
 import Navbar from './Navbar';
 import MovieCard from './MovieCard';
 import {addMovies,setShowFavourites} from '../actions';
-import { StoreContext } from '../index';
+
 
 class App extends React.Component {
   componentDidMount(){
     //or use this.props.store
-    const {store}=this.props;
-    store.subscribe(()=>{
-      console.log("Updated");
-      this.forceUpdate();
-    });
+
+    //we are not using subscribe here after using connect from react-redux
+    // const {store}=this.props;
+    // store.subscribe(()=>{
+    //   console.log("Updated");
+    //   this.forceUpdate();
+    // });
     //make API call
     //we can do this.props.store also but we have used line 8 to remove these extra words(this.props)
 
     //we are now using a function to get object for dispatch from action folder
-    store.dispatch(addMovies(data));  //we took movies from data file
+    this.props.dispatch(addMovies(data));  //we took movies from data file
 
     console.log("State:",this.props.store.getState());
   }
 
   isMovieFavourite=(movie)=>{
-    const {movies}=this.props.store.getState();
+    const {movies}=this.props;
     const index=movies.favourites.indexOf(movie);
     if(index !==-1){
       //movie found
@@ -34,11 +36,11 @@ class App extends React.Component {
   }
 
   onChangeTab=(val)=>{
-    this.props.store.dispatch(setShowFavourites(val));
+    this.props.dispatch(setShowFavourites(val));
   }
 
   render() {
-    const {movies,search}=this.props.store.getState(); //{ movies:{},search:{}}
+    const {movies,search}=this.props; //{ movies:{},search:{}}
     const {list,favourites,showFavourites}=movies;
     console.log("RENDER",this.props.store.getState());
     // if showFavourites is true then display favourites tab else movies tab... favourites and list are arrays we get from props
@@ -64,14 +66,21 @@ class App extends React.Component {
   }
 }
 
-class AppWrapper extends React.Component {
-  render() {
-    return (
-      <StoreContext.Consumer>
-        {(store) => <App store={store} />}
-      </StoreContext.Consumer>
-    );
-  }
+//No appWrapper required after using connect
+// class AppWrapper extends React.Component {
+//   render() {
+//     return (
+//       <StoreContext.Consumer>
+//         {(store) => <App store={store} />}
+//       </StoreContext.Consumer>
+//     );
+//   }
+// }
+function mapStateToProps(state) {
+  return {
+    movies: state.movies,
+    search: state.search,
+  };
 }
-
-export default AppWrapper;
+const connectedComponent = connect(mapStateToProps)(App);
+export default connectedComponent;
