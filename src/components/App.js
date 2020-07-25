@@ -22,7 +22,7 @@ class App extends React.Component {
     //we are now using a function to get object for dispatch from action folder
     this.props.dispatch(addMovies(data));  //we took movies from data file
 
-    console.log("State:",this.props.store.getState());
+    // console.log("State:",this.props.store.getState());
   }
 
   isMovieFavourite=(movie)=>{
@@ -42,12 +42,12 @@ class App extends React.Component {
   render() {
     const {movies,search}=this.props; //{ movies:{},search:{}}
     const {list,favourites,showFavourites}=movies;
-    console.log("RENDER",this.props.store.getState());
+    console.log("RENDER",this.props);
     // if showFavourites is true then display favourites tab else movies tab... favourites and list are arrays we get from props
     const displayMovie=showFavourites?favourites:list;
     return (
       <div className="App">
-        <Navbar dispatch={this.props.store.dispatch} search={search} />
+        <Navbar dispatch={this.props.dispatch} search={search} />
         <div className='main'>
           <div className='tabs'>
             {/* for class i have used js backticks we can also do it without backticks */}
@@ -56,7 +56,7 @@ class App extends React.Component {
           </div>
           <div className='list'>
             {displayMovie.map((movie, index) => {
-              return (<MovieCard movie={movie} key={index} dispatch={this.props.store.dispatch} isMovieFavourite={this.isMovieFavourite(movie)} />)
+              return (<MovieCard movie={movie} key={index} dispatch={this.props.dispatch} isMovieFavourite={this.isMovieFavourite(movie)} />)
             })}
           </div>
           {displayMovie.length===0?<div className='no-movies'>No movies to Display!</div> :''}
